@@ -1,0 +1,80 @@
+# Load the built-in iris dataset - contains measurements of 150 iris flowers
+data(iris)
+# Extract Sepal.Width variable - we'll analyze sepal width distribution
+sepal_width <- iris$Sepal.Width
+# Set up 1x3 grid layout for side-by-side plots (1 row, 3 columns)
+par(mfrow = c(1, 3))
+# D.prudhvi krishna
+# PLOT 1: HISTOGRAM ONLY
+# 24bsd7046
+hist(sepal_width,
+     breaks = seq(2, 4.5, by = 0.25),  # Define bin ranges: 2.0-2.25, 2.25-2.5, ..., 4.25-4.5
+     main = "Histogram of Sepal Width",  # Plot title
+     xlab = "Sepal Width (cm)",         # X-axis label
+     ylab = "Frequency",                # Y-axis label
+     col = "lightblue",                 # Fill color for bars
+     border = "darkblue",               # Border color for bars
+     ylim = c(0, 40))                   # Set consistent y-axis limit for comparison
+# PLOT 2: FREQUENCY POLYGON ONLY
+# Create histogram object without plotting - stores bin calculations
+hist_obj <- hist(sepal_width, 
+                 breaks = seq(2, 4.5, by = 0.25),
+                 plot = FALSE)  # Compute without drawing
+# Plot frequency polygon using bin midpoints and counts
+plot(hist_obj$mids,    # X-coordinates: middle of each bin
+     hist_obj$counts,  # Y-coordinates: frequency count in each bin
+     type = "b",       # Plot both points and connecting lines
+     lwd = 2,          # Line width
+     col = "darkred",  # Line/point color
+     main = "Frequency Polygon", 
+     xlab = "Sepal Width (cm)",
+     ylab = "Frequency",
+     ylim = c(0, 40),  # Same y-limit as histogram
+     pch = 19)         # Point style: solid circles
+# PLOT 3: COMBINED HISTOGRAM + FREQUENCY POLYGON
+# Create histogram as base plot:
+# - This plots the distribution using bars
+hist(sepal_width,
+     # Define bin boundaries: from 2.0 to 4.5 in 0.25 cm increments
+     breaks = seq(2, 4.5, by = 0.25),
+     # Main title for the plot
+     main = "Combined Histogram & Frequency Polygon",
+          # Axis labels with units specified
+     xlab = "Sepal Width (cm)",
+     ylab = "Frequency",
+          # Color settings:
+     col = "lightgreen",    # Fill color for bars
+     border = "darkgreen",  # Border color for bars
+# Set consistent y-axis limit to match other plots
+     ylim = c(0, 40))
+# OVERLAY FREQUENCY POLYGON ON HISTOGRAM
+# - Uses precomputed histogram object (hist_obj) from Plot 2
+# - hist_obj contains bin calculations (midpoints and counts)
+lines(hist_obj$mids,   # X-coordinates: bin center points
+      hist_obj$counts, # Y-coordinates: frequency values
+      # Plot type: "b" = both points and connecting lines
+      type = "b",      
+      # Visual enhancements:
+      lwd = 2,         # Line width (thickness)
+      col = "purple",  # Color for polygon line/points
+      pch = 19)        # Point style: solid circles
+# ADD LEGEND FOR PLOT ELEMENTS
+legend("topright",  # Position in top-right corner
+       
+       # Text labels for legend items
+       legend = c("Histogram", "Frequency Polygon"),  
+       
+       # Fill colors (NA for polygon since it's a line)
+       fill = c("lightgreen", NA),          
+       
+       # Border colors (NA for line element)
+       border = c("darkgreen", NA),         
+       
+       # Line types (NA for histogram, solid for polygon)
+       lty = c(NA, 1),                      
+       
+       # Point styles (NA for histogram, solid circle for polygon)
+       pch = c(NA, 19),                     
+       
+       # Colors for lines/points (NA for histogram, purple for polygon)
+       col = c(NA, "purple"))
